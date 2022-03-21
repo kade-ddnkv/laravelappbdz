@@ -14,7 +14,7 @@
                             </div>
                         @endif
 
-                        @role('admin')
+                        @role('administrator')
                         <h3>- hello, admin! -</h3>
                         @endrole
 

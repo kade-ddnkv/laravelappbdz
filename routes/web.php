@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
     return 'Добро пожаловать, Админ';
-})->middleware('role:admin');
+})->middleware('role:administrator');
 
 Route::get('/', function () {
     return view('welcome');

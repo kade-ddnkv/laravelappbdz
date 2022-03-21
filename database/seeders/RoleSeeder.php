@@ -16,22 +16,21 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $adminPermissions = Permission::whereIn('slug', ['manage']);
+        $adminPermissions = Permission::whereIn('slug', ['manage-users', 'manage-products', 'view-all-orders'])
+        ->get();
+        $customerPermissions = Permission::whereIn('slug', ['manage-personal-orders'])
+        ->get();
 
-        $admin = new Role();
-        $admin->name = 'Administrator';
-        $admin->slug = 'admin';
-        $admin->save();
-        $admin->permissions()->attach($allPermissions);
+        $admin = Role::create([
+            'name' => 'Administrator',
+            'slug' => 'administrator'
+        ]);
+        $admin->permissions()->attach($adminPermissions);
 
-        $manager = new Role();
-        $manager->name = 'Project Manager';
-        $manager->slug = 'project-manager';
-        $manager->save();
-
-        $developer = new Role();
-        $developer->name = 'Web Developer';
-        $developer->slug = 'web-developer';
-        $developer->save();
+        $customer = Role::create([
+            'name' => 'Customer',
+            'slug' => 'customer'
+        ]);
+        $customer->permissions()->attach($customerPermissions);
     }
 }

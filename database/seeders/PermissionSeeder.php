@@ -15,29 +15,27 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        $manageUsers = Permission::create([
-            'name' => 'Manage Users',
-            'slug' => 'manage-users'
-        ]);
+        $permissions = [
+            [
+                'name' => 'Manage Users',
+                'slug' => 'manage-users'
+            ],
+            [
+                'name' => 'Manage Products',
+                'slug' => 'manage-products'
+            ],
+            [
+                'name' => 'Manage Personal Orders',
+                'slug' => 'manage-personal-orders'
+            ],
+            [
+                'name' => 'View All Orders',
+                'slug' => 'view-all-orders'
+            ]
+        ];
 
-        $manageProducts = Permission::create([
-            'name' => 'Manage Products',
-            'slug' => 'manage-products'
-        ]);
-
-        $managePersonalOrders = Permission::create([
-            'name' => 'Manage Personal Orders',
-            'slug' => 'manage-personal-orders'
-        ]);
-
-//        $viewProducts = Permission::create([
-//            'name' => 'View Products',
-//            'slug' => 'view-products'
-//        ]);
-
-        $viewAllOrders = Permission::create([
-            'name' => 'View All Orders',
-            'slug' => 'view-all-orders'
-        ]);
+        foreach ($permissions as $permission) {
+            Permission::create($permission);
+        }
     }
 }
