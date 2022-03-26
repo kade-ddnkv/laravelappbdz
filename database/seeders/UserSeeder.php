@@ -19,33 +19,29 @@ class UserSeeder extends Seeder
     {
         $adminRole = Role::whereSlug('administrator')->first();
         $customerRole = Role::whereSlug('customer')->first();
+        $roles = [$adminRole, $customerRole];
 
-        $users = [
-            [
-                'name' => 'admin',
-                'email' => 'admin@local',
-                'password' => bcrypt('secret')
-            ],
-        ];
+        // Рандомная генерация.
+        User::factory(6)->create();
+        foreach (User::all() as $user) {
+            $user->roles()->attach($roles[array_rand($roles)]);
+        }
+
+        // Генерация хардкод для удобства.
         $admin = User::create([
             'name' => 'admin',
             'email' => 'admin@local',
+            'email_verified_at' => now(),
             'password' => bcrypt('secret')
         ]);
         $admin->roles()->attach($adminRole);
 
-        $customer1 = User::create([
-            'name' => 'customer1',
-            'email' => 'customer1@local',
+        $customer = User::create([
+            'name' => 'customer',
+            'email' => 'customer@local',
+            'email_verified_at' => now(),
             'password' => bcrypt('secret')
         ]);
-        $customer1->roles()->attach($customerRole);
-
-        $customer2 = User::create([
-            'name' => 'customer2',
-            'email' => 'customer2@local',
-            'password' => bcrypt('secret')
-        ]);
-        $customer2->roles()->attach($customerRole);
+        $customer->roles()->attach($customerRole);
     }
 }

@@ -14,12 +14,21 @@ class RoleMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $role, $permission = null)
+    public function handle(Request $request, Closure $next, $roles, $permission = null)
     {
         if (auth()->user() === null) {
             abort(404);
         }
-        if(!auth()->user()->hasRole($role)) {
+        $rolesExploded = array_map(function ($str) {
+            return trim($str);
+        }, explode('|', $roles));
+
+        // Если подходит хоть одна роль из предложенных в $roles, то middleware проходит.
+        $pass = false;
+        foreach ($rolesExploded as $role) {
+            $pass |= auth()->user()->hasRole($role);
+        }
+        if (!$pass) {
             abort(404);
         }
         if($permission !== null && !auth()->user()->can($permission)) {
